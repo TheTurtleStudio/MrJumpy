@@ -8,9 +8,11 @@ black = (0,0,0)
 gameDisplay = pygame.display.set_mode((800,800))
 pygame.display.set_caption("Escape the town")
 
-background = pygame.image.load('bg.png') 
+bg1 = pygame.image.load('bg.png')
+background = bg1
+bg2 = pygame.image.load('bg2.png')
 gameDisplay.blit(background, (0,0)) 
-
+current_background = [background]
 
 you = pygame.sprite.Sprite()
 you.image = pygame.image.load('player1.png')
@@ -37,13 +39,30 @@ move_right=Dir(False)
 move_up=Dir(False)
 move_down=Dir(False)
 
+def update_character():
+    You.clear(gameDisplay,background)
+    You.draw(gameDisplay)
 
+def switch():
+    if current_background[0] == bg1:
+        background = bg2
+    elif current_background[0] == bg2:
+        background = bg1
+    for i in range(len(current_background)):
+        current_background.pop()
+    current_background.append(background)
+
+    gameDisplay.blit(background, (0,0))
+    update_character()
 
 while not gameExit:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             gameExit = True
         if event.type == pygame.KEYDOWN:
+            if event.key == 113:
+                switch()
+                
             if event.key == pygame.K_LEFT:
                 move_left.setvalue(True)
                 #old_x = you.rect.center[0]
@@ -107,8 +126,7 @@ while not gameExit:
         x=old_x
         y=old_y + 5
         you.rect.center=(x,y)
-    You.clear(gameDisplay,background)
-    You.draw(gameDisplay)
+    update_character()
     pygame.display.update()
     wait(.05)
 
