@@ -1,3 +1,5 @@
+
+
 import pygame
 from time import sleep as wait
 
@@ -40,7 +42,7 @@ move_up=Dir(False)
 move_down=Dir(False)
 
 def update_character():
-    You.clear(gameDisplay,background)
+    You.clear(gameDisplay,current_background[0])
     You.draw(gameDisplay)
 
 def switch():
